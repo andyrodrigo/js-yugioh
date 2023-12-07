@@ -100,9 +100,9 @@ function setCardsField(cardId) {
   state.fieldCards.player.style.display = "block";
   state.fieldCards.computer.style.display = "block";
 
-  state.cardSprites.avatar;
+  state.cardSprites.avatar.src = '';
   state.cardSprites.name.innerText = "selecione";
-  state.cardSprites.name.innerText = "uma carta";
+  state.cardSprites.type.innerText = "uma carta";
 
   state.fieldCards.player.src = cardData[cardId].img;
   state.fieldCards.computer.src = cardData[computerCardId].img;
@@ -168,6 +168,10 @@ function resetDuel() {
 function init() {
   drawCards(5, state.playersSides.player1);
   drawCards(5, state.playersSides.computer);
+
+  const bgm = document.getElementById('bgm');
+  console.log(bgm)
+  bgm.play()
 }
 
 init();
