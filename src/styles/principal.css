@@ -1,0 +1,104 @@
+#tela-inicial {
+  background-color: aqua;
+}
+
+#tela-jogo {
+  background-color: burlywood;
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#tela-info {
+  /* flex-grow: 1; */
+  /* max-width: 200px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#tela-batalha {
+  flex-grow: 1;
+  width: 90%;
+  max-width: 800px;
+}
+
+#caixa-carta-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.caixa-cartoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carta {
+  width: 16%;
+  max-width: 100px;
+}
+
+.carta-deck {
+  min-width: 50px;
+  transition: 0.2;
+}
+
+.carta-deck:hover {
+  transform: scale(1.2);
+}
+
+.carta-exibicao {
+  min-width: 70px;
+}
+
+.caixa-batalha {
+  display: flex;
+  flex-direction: row;
+}
+
+.caixa-rosto {
+  height: 100px;
+  width: 80px;
+}
+
+.caixa-personagem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#caixa-central {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#jogar {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+
+#tela-opcoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.debug {
+  border: solid red 1px;
+}

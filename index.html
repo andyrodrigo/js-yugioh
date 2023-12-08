@@ -5,66 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="./src/styles/reset.css" />
-    <link rel="stylesheet" href="./src/styles/main.css" />
+    <link rel="stylesheet" href="./src/styles/principal.css" />
     <link rel="stylesheet" href="./src/styles/buttons.css" />
     <link rel="stylesheet" href="./src/styles/containers_and_frames.css" />
 
-    <link rel="icon" type="image/x-icon" href="./src/assets/favicon/Favicon.ico">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="./src/assets/favicon/Favicon.ico"
+    />
 
-    <title>Yugi-oh Game</title>
+    <title>Jogo Yugi-oh</title>
   </head>
   <body>
+    <main></main>
+    <section id="tela-inicial">
+      <button onclick="iniciar()">iniciar</button>
+    </section>
 
-<audio id="bgm" loop>
-  <source src="./src/assets/audios/egyptian_duel.mp3" type="audio/mp3" />
-</audio>
-
-    <div class="bg-video">
-      <video class="video" autoplay loop muted>
-        <source src="./src/assets/video/yugi.mp4" type="video/mp4" />
-      </video>
-    </div>
-    <div class="container">
-      <div class="container__left framed-golden-2">
-        <div class="score_box frame">
-          <span id="score_points">Win : 0 | Lose : 0 </span>
-        </div>
-        <div class="menu_avatar">
-          <img id="card-image" />
-        </div>
-        <div class="card_details frame">
-          <p id="card-name">selecione</p>
-          <p id="card-type">uma carta</p>
-        </div>
-      </div>
-
-      <div class="container__right">
-        <div class="card-box__container">
-          <div id="computer-cards" class="card-box framed"></div>
-
-          <div class="card-versus__container">
-            <div class="versus-top">
-              <div class="card-infield">
-                <img id="player-field-card" height="180px" width="125px" />
-              </div>
-              <img height="100px" src="./src/assets/icons/millenium2.png" />
-              <div class="card-infield">
-                <img id="computer-field-card" height="180px" width="125px" />
-              </div>
-            </div>
-
-            <div class="versus-bottom">
-              <button id="next-duel" class="rpgui-button" onclick="resetDuel()">
-                GANHOU
-              </button>
-            </div>
+    <section id="tela-jogo">
+      <div class="framed-golden-2" style="width: 100vw">
+        <div id="tela-info">
+          <div>
+            <img
+              id="carta-imagem"
+              src="./src/assets/icons/card-back.png"
+              alt="carta"
+              class="carta carta-exibicao"
+            />
           </div>
-
-          <div id="player-cards" class="card-box framed"></div>
+          <div id="caixa-carta-info">
+            <div id="carta-nome">Nome</div>
+            <div id="carta-tipo">Tipo</div>
+            <div id="carta-poder">100</div>
+            <div id="carta-efeito">descrição do efeito</div>
+          </div>
         </div>
       </div>
+
+      <div id="tela-batalha">
+        <div class="framed caixa-cartoes">
+          <img
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+          <img
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+          <img
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+          <img
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+          <img
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+        </div>
+        <div class="framed-grey caixa-batalha">
+          <div class="caixa-personagem">
+            <div class="framed-golden caixa-rosto"></div>
+            <div>2000</div>
+            <button class="rpgui-button">Próxima</button>
+          </div>
+          <div id="caixa-central">
+            <!-- <label for="regras">Regras</label> -->
+            <img
+              id="regras"
+              height="80px"
+              src="./src/assets/icons/millenium2.png"
+            />
+          </div>
+          <div class="caixa-personagem">
+            <div class="framed-golden caixa-rosto"></div>
+            <div>2000</div>
+            <button class="rpgui-button">Próxima</button>
+          </div>
+        </div>
+        <div class="framed caixa-cartoes">
+          <img
+            id="carta-jogador-5"
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+          <img
+            id="carta-jogador-4"
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+          <img
+            id="carta-jogador-3"
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+          <img
+            id="carta-jogador-2"
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+          <img
+            id="carta-jogador-1"
+            src="./src/assets/icons/card-back.png"
+            alt="carta"
+            class="carta carta-deck"
+          />
+        </div>
+      </div>
+
+      <div class="framed-golden-2" style="width: 100vw">
+        <div id="tela-opcoes">
+          <button class="rpgui-button" onclick="mover()">Sair</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="jogar" class="framed-golden">
+      <button class="rpgui-button">Jogar</button>
     </div>
 
-    <script src="./src/scripts/engine.js" defer></script>
+    <script src="./src/scripts/variaveis.js" defer></script>
+    <script src="./src/scripts/funcoes.js" defer></script>
+    <script src="./src/scripts/motor.js" defer></script>
   </body>
 </html>
