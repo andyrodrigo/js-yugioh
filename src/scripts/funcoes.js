@@ -1,5 +1,6 @@
 function desenharCartao(indice) {
-  estado.cartaoExibido.imagem.src = cartas[indice].imagem;
+  //console.log(cartas[indice]);
+  // estado.cartaoExibido.imagem.src = cartas[indice].imagem;
   estado.cartaoExibido.tipo.innerText = "Tipo: " + cartas[indice].tipo;
   estado.cartaoExibido.nome.innerText = "Nome: " + cartas[indice].nome;
   estado.cartaoExibido.poder.innerText = "Poder : " + cartas[indice].poder;
@@ -11,8 +12,18 @@ function atribuirCarta(carta, indice) {
   carta.setAttribute("data-id", id);
   if (!estado.batalha.iniciado) {
     carta.addEventListener("mouseover", () => {
-      console.log(carta.getAttribute("data-id"));
+      //console.log(carta.getAttribute("data-id"));
       desenharCartao(carta.getAttribute("data-id"));
+      estado.telas.telaJogar.style.display = "none";
+    });
+    carta.addEventListener("mousedown", () => {
+      //console.log(carta.getAttribute("data-id"));
+      const cartaAtual = carta.getAttribute("data-id");
+      desenharCartao(cartaAtual);
+      estado.telas.telaJogar.style.display = "flex";
+      estado.batalha.selecionadoJogador = cartaAtual;
+      estado.cartaoExibido.cartaSelecionada.innerText = cartas[cartaAtual].nome;
+      //console.log("cartaAtual: ", estado.batalha.selecionadoJogador);
     });
   }
 }
@@ -45,4 +56,42 @@ function iniciar() {
 
   definirCartas(0);
   estado.batalha.iniciado = true;
+}
+
+function verificarVitoria(tipo1, tipo2) {
+  if (tipo1 === tipo2) {
+    return { resultado: "empatou", mensagem: "Ambos têm o mesmo tipo" };
+  }
+
+  if (resultados[tipo1].vence.includes(tipo2)) {
+    const i = resultados[tipo1].vence.indexOf(tipo2);
+    return {
+      resultado: "venceu",
+      mensagem: resultados[tipo1][`mensagem${i + 1}`],
+    };
+  } else {
+    const i = resultados[tipo2].vence.indexOf(tipo1);
+    return {
+      resultado: "perdeu",
+      mensagem: resultados[tipo2][`mensagem${i + 1}`],
+    };
+  }
+}
+
+function analisarCombate() {
+  const indiceAleatorio = Math.floor(Math.random() * yugi.cartas.length);
+  cartaComputador = yugi.cartas[indiceAleatorio];
+  cartaJogador = yugi.cartas[estado.batalha.selecionadoJogador];
+  console.log("Carta do PC", cartaComputador);
+  console.log("Carta do Jogador", cartaJogador);
+
+  const resultado = verificarVitoria(cartaJogador.tipo, "Spock"); //cartaComputador.tipo);
+  console.log("Resultado", resultado);
+}
+
+function jogar() {
+  console.log("jogou");
+  estado.telas.telaJogar.style.display = "none";
+  estado.telas.telaBatalha.style.display = "flex";
+  analisarCombate();
 }
