@@ -74,8 +74,10 @@
         <div class="framed-grey caixa-batalha">
           <div class="caixa-personagem">
             <div class="framed-golden caixa-rosto"></div>
-            <div>2000</div>
-            <button class="rpgui-button">Próxima</button>
+            <div id="energia-jogador">2000</div>
+            <button class="rpgui-button" onclick="mostrarProximo()">
+              Próxima
+            </button>
           </div>
           <div id="caixa-central">
             <!-- <label for="regras">Regras</label> -->
@@ -87,8 +89,10 @@
           </div>
           <div class="caixa-personagem">
             <div class="framed-golden caixa-rosto"></div>
-            <div>2000</div>
-            <button class="rpgui-button">Próxima</button>
+            <div id="energia-computador">2000</div>
+            <button class="rpgui-button" onclick="mostrarProximo()" disabled>
+              Próxima
+            </button>
           </div>
         </div>
         <div class="framed caixa-cartoes">
@@ -96,38 +100,38 @@
             id="carta-jogador-5"
             src="./src/assets/icons/card-back.png"
             alt="carta"
-            class="carta carta-deck"
+            class="carta carta-deck carta-aberta"
           />
           <img
             id="carta-jogador-4"
             src="./src/assets/icons/card-back.png"
             alt="carta"
-            class="carta carta-deck"
+            class="carta carta-deck carta-aberta"
           />
           <img
             id="carta-jogador-3"
             src="./src/assets/icons/card-back.png"
             alt="carta"
-            class="carta carta-deck"
+            class="carta carta-deck carta-aberta"
           />
           <img
             id="carta-jogador-2"
             src="./src/assets/icons/card-back.png"
             alt="carta"
-            class="carta carta-deck"
+            class="carta carta-deck carta-aberta"
           />
           <img
             id="carta-jogador-1"
             src="./src/assets/icons/card-back.png"
             alt="carta"
-            class="carta carta-deck"
+            class="carta carta-deck carta-aberta"
           />
         </div>
       </div>
 
       <div class="framed-golden-2" style="width: 100vw">
         <div id="tela-opcoes">
-          <button class="rpgui-button" onclick="mover()">Sair</button>
+          <button class="rpgui-button" onclick="sair()">Sair</button>
         </div>
       </div>
     </section>

@@ -48,7 +48,7 @@
   transition: 0.2;
 }
 
-.carta-deck:hover {
+.carta-aberta:hover {
   transform: scale(1.2);
 }
 
