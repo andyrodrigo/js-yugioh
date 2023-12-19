@@ -139,3 +139,47 @@
   display: flex;
   justify-content: center;
 }
+
+/*-----*/
+
+.cartao {
+  width: 100px;
+  height: 150px;
+  /* perspective: 1000px;
+  border: red solid 1px; */
+}
+
+/* .cartao:hover .cartao-interior {
+  transform: rotateY(180deg);
+} */
+
+.girar .cartao-interior {
+  transform: rotateY(180deg);
+}
+
+.cartao-interior {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.cartao-rosto {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+}
+
+.cartao-rosto img {
+  width: 100%;
+  height: 100%;
+}
+
+.frente {
+  transform: rotateY(0deg);
+}
+
+.tras {
+  transform: rotateY(180deg);
+}

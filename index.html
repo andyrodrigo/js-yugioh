@@ -21,6 +21,17 @@
     <main></main>
     <section id="tela-inicial">
       <button onclick="iniciar()">iniciar</button>
+
+      <!-- <div class="cartao" onclick="girarCarta()">
+        <div class="cartao-interior">
+          <div class="cartao-rosto tras">
+            <img src="./src/assets/icons/exodia.png" alt="Front Image" />
+          </div>
+          <div class="cartao-rosto frente">
+            <img src="./src/assets/icons/card-back.png" alt="Back Image" />
+          </div>
+        </div>
+      </div> -->
     </section>
 
     <section id="tela-jogo">
@@ -46,26 +57,31 @@
       <div id="tela-batalha">
         <div class="framed caixa-cartoes">
           <img
+            id="carta-computador-6"
             src="./src/assets/icons/card-back.png"
             alt="carta"
             class="carta carta-deck"
           />
           <img
+            id="carta-computador-7"
             src="./src/assets/icons/card-back.png"
             alt="carta"
             class="carta carta-deck"
           />
           <img
+            id="carta-computador-8"
             src="./src/assets/icons/card-back.png"
             alt="carta"
             class="carta carta-deck"
           />
           <img
+            id="carta-computador-9"
             src="./src/assets/icons/card-back.png"
             alt="carta"
             class="carta carta-deck"
           />
           <img
+            id="carta-computador-10"
             src="./src/assets/icons/card-back.png"
             alt="carta"
             class="carta carta-deck"
@@ -75,7 +91,7 @@
           <div class="caixa-personagem">
             <div class="framed-golden caixa-rosto"></div>
             <div id="energia-jogador">2000</div>
-            <button class="rpgui-button" onclick="mostrarProximo()">
+            <button class="rpgui-button" onclick="mostrarProximo('jogador')">
               Próxima
             </button>
           </div>
@@ -90,7 +106,12 @@
           <div class="caixa-personagem">
             <div class="framed-golden caixa-rosto"></div>
             <div id="energia-computador">2000</div>
-            <button class="rpgui-button" onclick="mostrarProximo()" disabled>
+            <button
+              id="button-proximo-bloqueado"
+              class="rpgui-button"
+              onclick="mostrarProximo('computador')"
+              disabled
+            >
               Próxima
             </button>
           </div>
@@ -142,21 +163,53 @@
     </div>
 
     <div id="batalha" class="framed-golden-2">
-      <div id="carta-jogada-computador" class="caixa-carta-exibicao">
+      <!-- <div id="carta-jogada-computador" class="caixa-carta-exibicao">
         <img
           src="./src/assets/icons/card-back.png"
           alt="carta"
           class="carta carta-exibicao"
         />
+      </div> -->
+
+      <div id="carta-jogada-computador" class="cartao">
+        <div class="cartao-interior">
+          <div class="cartao-rosto tras">
+            <img
+              id="carta-computador-rosto"
+              src="./src/assets/icons/exodia.png"
+              alt="Front Image"
+            />
+          </div>
+          <div class="cartao-rosto frente">
+            <img src="./src/assets/icons/card-back.png" alt="Back Image" />
+          </div>
+        </div>
       </div>
+
       <div id="mensagem-batalha" class="coluna">mensagem</div>
-      <div id="carta-jogada-jogador" class="caixa-carta-exibicao">
+
+      <div id="carta-jogada-jogador" class="cartao">
+        <div class="cartao-interior">
+          <div class="cartao-rosto tras">
+            <img
+              id="carta-jogador-rosto"
+              src="./src/assets/icons/exodia.png"
+              alt="Front Image"
+            />
+          </div>
+          <div class="cartao-rosto frente">
+            <img src="./src/assets/icons/card-back.png" alt="Back Image" />
+          </div>
+        </div>
+      </div>
+
+      <!-- <div id="carta-jogada-jogador" class="caixa-carta-exibicao">
         <img
           src="./src/assets/icons/card-back.png"
           alt="carta"
           class="carta carta-exibicao"
         />
-      </div>
+      </div> -->
     </div>
 
     <script src="./src/scripts/variaveis.js" defer></script>

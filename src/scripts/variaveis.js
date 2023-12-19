@@ -123,7 +123,7 @@ const cartas = [
     tipo: "Spock",
     img: `${pathImages}magician.png`,
     poder: 0,
-    efeito: "Faz o ataque e Eefeito do adversário",
+    efeito: "Faz o ataque e efeito do adversário",
   },
   {
     id: 12,
@@ -155,7 +155,7 @@ const cartaVazia = {
   id: 0,
   nome: "",
   tipo: "",
-  img: "",
+  img: `${pathImages}card-back.png`,
   poder: "",
   efeito: "",
 };
@@ -175,6 +175,9 @@ const estado = {
     energiaJogador: document.getElementById("energia-jogador"),
     energiaComputador: document.getElementById("energia-computador"),
     mensagemBatalha: document.getElementById("mensagem-batalha"),
+    botaoBloqueado: document.getElementById("button-proximo-bloqueado"),
+    cartaJogadorRosto: document.getElementById("carta-jogador-rosto"),
+    cartaComputadorRosto: document.getElementById("carta-computador-rosto"),
   },
   cartaoExibido: {
     imagem: document.getElementById("carta-imagem"),
@@ -190,6 +193,11 @@ const estado = {
     carta3: document.getElementById("carta-jogador-3"),
     carta4: document.getElementById("carta-jogador-4"),
     carta5: document.getElementById("carta-jogador-5"),
+    carta6: document.getElementById("carta-computador-6"),
+    carta7: document.getElementById("carta-computador-7"),
+    carta8: document.getElementById("carta-computador-8"),
+    carta9: document.getElementById("carta-computador-9"),
+    carta10: document.getElementById("carta-computador-10"),
   },
   jogador: {
     personagem: yugi,
@@ -197,6 +205,8 @@ const estado = {
     energia: 2000,
     efeitos: [],
     cartaSelecionada: undefined,
+    bonusAtaque: 0,
+    bonusTemporario: [],
   },
   computador: {
     personagem: yugi,
@@ -204,10 +214,13 @@ const estado = {
     energia: 2000,
     efeitos: [],
     cartaSelecionada: undefined,
+    bonusAtaque: 0,
+    bonusTemporario: [],
   },
   batalha: {
     turno: 1,
     iniciado: false,
+    bloqueioBotaoProximo: true,
     selecionadoJogador: undefined,
     selecionadoComputador: undefined,
   },

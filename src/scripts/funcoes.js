@@ -8,11 +8,14 @@ function moverCartaParaUltimaPosicao(id, deck) {
   //console.log("deck: ", deck);
 }
 
-function testarFimDeJogo(energia, resultado) {
-  if (energia <= 0) {
+function testarFimDeJogo(vitima) {
+  if (estado[vitima].energia <= 0) {
     estado.batalha.iniciado = false;
+    let resultado = "venceu";
+    if (vitima === "jogador") resultado = "perdeu";
+
     setTimeout(() => {
-      estado.vista.mensagemBatalha.textContent = `Você ${resultado} a duelo!`;
+      estado.vista.mensagemBatalha.textContent = `Você ${resultado} o duelo!`;
       setTimeout(() => {
         sair();
       }, 3000);
@@ -20,39 +23,97 @@ function testarFimDeJogo(energia, resultado) {
   }
 }
 
-function realizarEfeito(jogadorAtual, carta) {
+function realizarEfeito(atacante, vitima, carta) {
   const id = carta.id;
   switch (id) {
+    case 10:
+      console.log("chifre");
+      estado[atacante].bonusAtaque += 100;
+      // estado[jogadorAtual].bonusTemporario.push({
+      //   bonus: 100,
+      //   turno: 0,
+      //   tipo: "poder",
+      // });
+      break;
+    case 11:
+      console.log("espelho");
+      if (estado[vitima].cartaSelecionada.id !== 11) {
+        causarDano(atacante, vitima, estado[vitima].cartaSelecionada);
+      }
+      break;
     case 13:
+      console.log("recuperação");
+      estado[atacante].energia += 500;
+      break;
+    case 14:
       console.log("olho");
-      estado[jogadorAtual].energia += 500;
+      if (atacante === "jogador") {
+        estado.vista.botaoBloqueado.removeAttribute("disabled");
+        estado.batalha.bloqueioBotaoProximo = false;
+      }
       break;
     default:
       break;
   }
 }
 
+function resolverTurnoDoPoder(lista) {
+  //const lista =
+  lista.forEach((objeto, index) => {
+    if (objeto.tipo === "poder") {
+      if (objeto.valor < 2) {
+        objeto.valor += 1;
+      } else {
+        lista.splice(index, 1);
+      }
+    }
+  });
+}
+
+function verEfeitosExtras() {
+  // console.log("efeitoJ: ", estado.jogador.bonusTemporario);
+  // console.log("efeitoPC: ", estado.computador.bonusTemporario);
+  // if (estado.jogador.bonusTemporario.length > 0) {
+  //   resolverTurnoDoPoder(estado.jogador.bonusTemporario);
+  // }
+  // if (estado.computador.bonusTemporario.length > 0) {
+  //   resolverTurnoDoPoder(estado.computador.bonusTemporario);
+  // }
+
+  //Aumento de pode Exodia
+  for (let i = 0; i < 5; i++) {
+    if (estado.jogador.deck[i].id === 2) {
+      estado.jogador.deck[i].poder += 400;
+    }
+    if (estado.computador.deck[i].id === 2) {
+      estado.computador.deck[i].poder += 400;
+    }
+  }
+}
+
+function causarDano(atacante, vitima, carta) {
+  const poder = carta.poder + estado[atacante].bonusAtaque;
+
+  estado[vitima].energia -= poder;
+
+  testarFimDeJogo(vitima);
+
+  if (estado.batalha.iniciado) realizarEfeito(atacante, vitima, carta);
+}
+
 function realizarResultado(resultado) {
   if (resultado === "venceu") {
-    const poder = estado.jogador.cartaSelecionada.poder;
-    estado.computador.energia -= poder;
-    testarFimDeJogo(estado.computador.energia, resultado);
-    if (estado.batalha.iniciado) {
-      realizarEfeito("jogador", estado.jogador.cartaSelecionada);
-    }
+    causarDano("jogador", "computador", estado.jogador.cartaSelecionada);
   } else if (resultado === "perdeu") {
-    const poder = estado.computador.cartaSelecionada.poder;
-    estado.jogador.energia -= poder;
-    testarFimDeJogo(estado.jogador.energia, resultado);
-    if (estado.batalha.iniciado) {
-      realizarEfeito("computador", estado.jogador.cartaSelecionada);
-    }
+    causarDano("computador", "jogador", estado.computador.cartaSelecionada);
   } else {
-    realizarEfeito("jogador", estado.jogador.cartaSelecionada);
-    realizarEfeito("computador", estado.jogador.cartaSelecionada);
+    realizarEfeito("jogador", "computador", estado.jogador.cartaSelecionada);
+    realizarEfeito("computador", "jogador", estado.computador.cartaSelecionada);
   }
 
   if (estado.batalha.iniciado) {
+    verEfeitosExtras();
+    desenharCartao(cartaVazia, "jogador");
     estado.vista.energiaComputador.textContent = estado.computador.energia;
     estado.vista.energiaJogador.textContent = estado.jogador.energia;
 
@@ -69,6 +130,9 @@ function realizarResultado(resultado) {
     estado.batalha.turno++;
 
     setTimeout(() => {
+      girarCarta("carta-jogada-jogador", false);
+      girarCarta("carta-jogada-computador", false);
+      estado.vista.mensagemBatalha.textContent = "";
       estado.telas.telaBatalha.style.display = "none";
     }, 3000);
   }
@@ -101,14 +165,24 @@ function analisarCombate() {
   cartaComputador = estado.computador.deck[indiceAleatorio];
   estado.computador.cartaSelecionada = cartaComputador;
 
-  //console.log("Carta do PC", cartaComputador);
-  //console.log("Carta do Jogador", cartaJogador);
+  console.log("Carta do PC", cartaComputador.nome);
+  console.log("Carta do Jogador", cartaJogador.nome);
+
+  estado.vista.cartaJogadorRosto.src = cartaJogador.img;
+  estado.vista.cartaComputadorRosto.src = cartaComputador.img;
+
+  setTimeout(() => girarCarta("carta-jogada-jogador", true), 1000);
+  setTimeout(() => girarCarta("carta-jogada-computador", true), 1000);
 
   const resultado = verificarVitoria(cartaJogador.tipo, cartaComputador.tipo);
 
-  estado.vista.mensagemBatalha.textContent = `${resultado.mensagem}! Jogador ${resultado.resultado}! `;
+  setTimeout(
+    () =>
+      (estado.vista.mensagemBatalha.textContent = `${resultado.mensagem}! Jogador ${resultado.resultado}! `),
+    1500
+  );
 
-  realizarResultado(resultado.resultado);
+  setTimeout(() => realizarResultado(resultado.resultado), 1500);
 
   //console.log("Resultado", resultado);
 }
@@ -120,30 +194,53 @@ function jogar() {
   analisarCombate();
 }
 
-function desenharCartao(carta) {
-  // estado.cartaoExibido.imagem.src = cartas.imagem;
+function desenharCartao(carta, jogadorAtual) {
+  if (jogadorAtual === "computador" && estado.batalha.bloqueioBotaoProximo)
+    return;
+
+  estado.cartaoExibido.imagem.src = carta.img;
   estado.cartaoExibido.tipo.innerText = "Tipo: " + carta.tipo;
   estado.cartaoExibido.nome.innerText = "Nome: " + carta.nome;
-  estado.cartaoExibido.poder.innerText = "Poder : " + carta.poder;
+
+  if (estado[jogadorAtual].bonusAtaque > 0) {
+    estado.cartaoExibido.poder.innerText =
+      "Poder : " +
+      carta.poder +
+      " + " +
+      estado[jogadorAtual].bonusAtaque +
+      "(Bônus)";
+  } else {
+    estado.cartaoExibido.poder.innerText = "Poder : " + carta.poder;
+  }
   estado.cartaoExibido.efeito.innerText = "Efeito: " + carta.efeito;
+}
+
+function girarCarta(nome, rosto) {
+  console.log(nome);
+  const cartao = document.querySelector(`#${nome}`);
+  if (rosto) {
+    cartao.classList.add("girar");
+  } else {
+    cartao.classList.remove("girar");
+  }
 }
 
 function buscarCarta(deck, id) {
   return deck.find((carta) => carta.id === id);
 }
 
-function atribuirCarta(carta, id) {
+function atribuirCarta(carta, id, jogadorAtual) {
   carta.setAttribute("data-id", id);
 
   if (!estado.batalha.iniciado) {
     const dataId = Number(carta.getAttribute("data-id"));
 
     carta.addEventListener("mouseover", () => {
-      desenharCartao(estado.jogador.deck[dataId]);
+      desenharCartao(estado[jogadorAtual].deck[dataId], jogadorAtual);
       estado.telas.telaJogar.style.display = "none";
     });
     carta.addEventListener("mousedown", () => {
-      desenharCartao(estado.jogador.deck[dataId]);
+      desenharCartao(estado[jogadorAtual].deck[dataId], jogadorAtual);
       estado.telas.telaJogar.style.display = "flex";
       estado.jogador.cartaSelecionada = estado.jogador.deck[dataId];
       estado.cartaoExibido.cartaSelecionada.innerText =
@@ -162,7 +259,19 @@ function definirCartas() {
   ];
 
   for (let i = 0; i < 5; i++) {
-    atribuirCarta(cartaDaRodada[i], i);
+    atribuirCarta(cartaDaRodada[i], i, "jogador");
+  }
+
+  const cartaDoPc = [
+    estado.cartasEmCampo.carta6,
+    estado.cartasEmCampo.carta7,
+    estado.cartasEmCampo.carta8,
+    estado.cartasEmCampo.carta9,
+    estado.cartasEmCampo.carta10,
+  ];
+
+  for (let i = 0; i < 5; i++) {
+    atribuirCarta(cartaDoPc[i], i, "computador");
   }
 }
 
@@ -171,10 +280,10 @@ function teste() {
   const carta = buscarCarta(cartas, 0);
 }
 
-function mostrarProximo() {
-  const id = estado.jogador.deck[5].id;
-  const carta = buscarCarta(estado.jogador.personagem.cartas, id);
-  desenharCartao(carta);
+function mostrarProximo(jogadorAtual) {
+  const id = estado[jogadorAtual].deck[5].id;
+  const carta = buscarCarta(estado[jogadorAtual].personagem.cartas, id);
+  desenharCartao(carta, jogadorAtual);
 }
 
 function embaralharDeck(deck) {
@@ -195,6 +304,9 @@ function zerarPlacares() {
   estado.batalha.turno = 1;
   estado.jogador.cartaSelecionada = undefined;
   estado.computador.cartaSelecionada = undefined;
+  estado.batalha.bloqueioBotaoProximo = true;
+  estado.vista.botaoBloqueado.setAttribute("disabled", "disabled");
+  estado.vista.mensagemBatalha.textContent = "";
 }
 
 function sair() {
@@ -210,7 +322,7 @@ function iniciar() {
 
   estado.vista.energiaComputador.textContent = estado.computador.energia;
   estado.vista.energiaJogador.textContent = estado.jogador.energia;
-  desenharCartao(cartaVazia);
+  desenharCartao(cartaVazia, "jogador");
 
   estado.telas.telaInicial.style.display = "none";
   estado.telas.telaJogo.style.display = "flex";
